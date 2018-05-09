@@ -12,18 +12,6 @@ export MANPATH="/usr/local/opt/gnu-tar/libexec/gnuman:$MANPATH"
 export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
 export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
 
-# Sets WORKSPACE env var to /Users/ruolinfan/AppOnboard
-export WORKSPACE='/Users/ruolinfan/AppOnboard'
-export PATH="$WORKSPACE:$PATH"
-
-# AOB Dashboard_React required env vars
-export AOB_ENV=local
-export PORT=8080
-export AOB_API_PROTOCOL=http
-export AOB_API_DOMAIN=aob-gateway.us-east-1.elasticbeanstalk.com
-export AOB_API_PATH=/
-export AOB_API_PORT=80
-
 # Show branch information in the terminal
 if [ -f ~/.bash_gitBranch ]; then
   . ~/.bash_gitBranch
