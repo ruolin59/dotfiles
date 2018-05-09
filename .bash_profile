@@ -13,7 +13,7 @@ export MANPATH="/usr/local/opt/gnu-sed/libexec/gnuman:$MANPATH"
 export MANPATH="/usr/local/opt/grep/libexec/gnuman:$MANPATH"
 
 # Sets WORKSPACE env var to /Users/ruolinfan/AppOnboard
-export WORKSPACE='/Users/ruolinfan/AppOnboard'
+export WORKSPACE='/Users/ruolinfan/AppOnboard/resources'
 export PATH="$WORKSPACE:$PATH"
 
 # AOB Dashboard_React required env vars
