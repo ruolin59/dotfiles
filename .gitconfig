@@ -1,0 +1,8 @@
+[user]
+	name = Ruolin Fan
+	email = ruolin.fan@apponboard.com
+[filter "tabspace"]
+	smudge = gunexpand --tabs=2 --first-only
+	clean = gexpand --tabs=2 --initial
+[push]
+	default = current
