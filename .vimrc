@@ -77,7 +77,7 @@ Plug 'nvie/vim-flake8'  " Python
 Plug 'larsbs/vim-xmll'  " XML
 Plug 'jelera/vim-javascript-syntax'  " JavaScript
 Plug 'pangloss/vim-javascript' " JavaScript
-Plug 'marijnh/tern_for_vim'  " JavaScript
+Plug 'ternjs/tern_for_vim'  " JavaScript
 Plug 'cakebaker/scss-syntax.vim'  " SASS
 Plug 'heavenshell/vim-jsdoc'  " JSDoc
 Plug 'JulesWang/css.vim'  " CSS
@@ -132,18 +132,16 @@ Plug 'scrooloose/nerdtree'
 let g:NERDTreeWinSize = 25
 let g:NERDTreeIgnore = ['^tags$', '^PYSMELLTAGS', '\.pyc$', '__pycache__', 'htmlcov', '.*\.egg-info']
 
-if $FASTVIM != '1'
-    Plug 'scrooloose/syntastic'
-    let g:syntastic_check_on_open=0
-    let g:syntastic_error_symbol='✗'
-    let g:syntastic_style_error_symbol='☢'
-    let g:syntastic_warning_symbol='⚠'
-    let g:syntastic_auto_jump=0
-    let g:syntastic_python_checkers = ['flake8']
-    let g:syntastic_python_flake8_args = "--max-line-length=120"
-    let g:syntastic_javascript_checkers = ['eslint']
-    let g:syntastic_ruby_checkers = ['rubocop']  " , 'rubylint']  Ruby-Lint does not seem to be Rails friendly
-endif
+Plug 'scrooloose/syntastic'
+let g:syntastic_check_on_open=0
+let g:syntastic_error_symbol='✗'
+let g:syntastic_style_error_symbol='☢'
+let g:syntastic_warning_symbol='⚠'
+let g:syntastic_auto_jump=0
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_flake8_args = "--max-line-length=120"
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_ruby_checkers = ['rubocop']  " , 'rubylint']  Ruby-Lint does not seem to be Rails friendly
 
 Plug 'vim-airline/vim-airline'
 let g:airline_powerline_fonts = 1
@@ -480,7 +478,7 @@ endif
 
 " Highlight long lines
 if exists('+colorcolumn')
-    set colorcolumn=120
+    set colorcolumn=100
     highlight ColorColumn ctermbg=darkgray guibg=#4E4E4E
 else
     au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>91v.\+', -1)
