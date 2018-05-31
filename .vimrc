@@ -133,7 +133,7 @@ let g:NERDTreeWinSize = 25
 let g:NERDTreeIgnore = ['^tags$', '^PYSMELLTAGS', '\.pyc$', '__pycache__', 'htmlcov', '.*\.egg-info']
 
 Plug 'scrooloose/syntastic'
-let g:syntastic_check_on_open=0
+let g:syntastic_check_on_open=1
 let g:syntastic_error_symbol='✗'
 let g:syntastic_style_error_symbol='☢'
 let g:syntastic_warning_symbol='⚠'
@@ -141,7 +141,11 @@ let g:syntastic_auto_jump=0
 let g:syntastic_python_checkers = ['flake8']
 let g:syntastic_python_flake8_args = "--max-line-length=120"
 let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_eslint_exe = 'npm run lint --'
 let g:syntastic_ruby_checkers = ['rubocop']  " , 'rubylint']  Ruby-Lint does not seem to be Rails friendly
+
+" Prefer local repo install of eslint over global install with syntastic
+Plug 'mtscout6/syntastic-local-eslint.vim'
 
 Plug 'vim-airline/vim-airline'
 let g:airline_powerline_fonts = 1
