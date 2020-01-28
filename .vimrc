@@ -67,6 +67,9 @@ let g:ycm_complete_in_comments = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
 let g:ycm_collect_identifiers_from_tags_files = 1
 
+" Vim color schemes
+Plug 'morhetz/gruvbox'
+
 " Syntax plugins
 Plug 'sheerun/vim-polyglot'
 let g:polyglot_disabled = ['javascript']
@@ -74,6 +77,7 @@ let g:polyglot_disabled = ['javascript']
 " Lenguage support
 Plug 'othree/html5.vim'  " HTML 5
 Plug 'nvie/vim-flake8'  " Python
+Plug 'psf/black'        " Python
 Plug 'larsbs/vim-xmll'  " XML
 Plug 'jelera/vim-javascript-syntax'  " JavaScript
 Plug 'pangloss/vim-javascript' " JavaScript
@@ -85,6 +89,7 @@ Plug 'genoma/vim-less'  " LessCSS
 Plug 'kchmck/vim-coffee-script' " CoffeeScript
 Plug 'Quramy/tsuquyomi'  " TypeScript
 Plug 'tpope/vim-rails'  " Ruby on rails
+Plug 'stephpy/vim-yaml' " YAML
 
 Plug 'mattn/emmet-vim'
 Plug 'rking/ag.vim'
@@ -110,6 +115,22 @@ Plug 'airblade/vim-gitgutter'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'jaxbot/semantic-highlight.vim'
 let g:semanticPersistCache=1
+let g:semanticGUIColors = [
+  \'#632708', '#0A05E2', '#06839A', '#CA2D80', '#148A29', '#1A2E7F', '#76680A', '#2B625A', '#8013CA', '#094DDC',
+  \'#4B0E3C', '#6648CF', '#0983E4', '#C53941', '#15500E', '#2165B1', '#441578', '#110F92', '#704D8D', '#155B7E',
+  \'#0A7551', '#7F4F64', '#A21799', '#4A5A3A', '#775219', '#B25542', '#122AD7', '#05944D', '#B80D2B', '#0B8079',
+  \'#D12700', '#471FE3', '#3A5ED8', '#8B44B9', '#2C790E', '#682029', '#4E5690', '#99448A', '#6855B6', '#1078B5',
+  \'#B7120F', '#3F51AF', '#765549', '#282E14', '#A1476B', '#A80F53', '#4A50E4', '#485A0F', '#741D76', '#2C7539',
+  \'#37119C', '#1263C9', '#7A45A0', '#62158B', '#7A3AD2', '#BF481A', '#115C3D', '#831649', '#7313A7', '#275993',
+  \'#AE3FC4', '#3B319B', '#BA19B7', '#B23EA1', '#9C5A0C', '#157399', '#2D2BC1', '#1A4317', '#1B4834', '#4F6D0B',
+  \'#BB3A73', '#2E1667', '#891B0D', '#1E6C6D', '#571A5B', '#406029', '#173DA4', '#A70A69', '#945153', '#6B3D6E',
+  \'#810E24', '#1729A3', '#5815C7', '#2C751F', '#130BAC', '#A32747', '#494094', '#411E0E', '#4E2BC1', '#141884',
+  \'#7B5A32', '#301085', '#5C3AA8', '#1B44CB', '#134EAE', '#42360D', '#A14F16', '#1F689B', '#641C37', '#4C5223',
+  \'#4D53C9', '#3732B0', '#386850', '#2324D9', '#4357A1', '#1B6A5A', '#0C8247', '#8F3F4E', '#A51282', '#1B6B7D',
+  \'#755E0F', '#4C1211', '#2511CB', '#1429B9', '#135D2D', '#5F5819', '#C1402C', '#3F6740', '#0E77D1', '#884020',
+  \'#804038', '#2B6AE0', '#5A3F2F', '#476D21', '#0734CE', '#8A2F26', '#595F4B', '#15671B', '#0C7419', '#237C5B'
+\]
+
 Plug 'junegunn/goyo.vim'
 Plug 'Raimondi/delimitMate'
 
@@ -139,7 +160,7 @@ let g:syntastic_style_error_symbol='☢'
 let g:syntastic_warning_symbol='⚠'
 let g:syntastic_auto_jump=0
 let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = "--max-line-length=120"
+let g:syntastic_python_flake8_args = "--max-line-length=100"
 let g:syntastic_javascript_checkers = ['eslint']
 let g:syntastic_ruby_checkers = ['rubocop']  " , 'rubylint']  Ruby-Lint does not seem to be Rails friendly
 
@@ -186,14 +207,14 @@ set winwidth=85
 set exrc                            " Enable project specific vimrc files
 set secure                          " Disable dangerous commands in project specific vimrc
 set t_Co=256
-set background=dark
-colorscheme molokai
+set background=light
+colorscheme gruvbox
 
 " == Identation and tabs
 set smartindent
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set textwidth=100
 set shiftround
 set expandtab
@@ -383,6 +404,7 @@ augroup python_files
     autocmd BufRead *.py SemanticHighlightToggle
 
     autocmd BufWritePre *.py :%s/\s\+$//e " Remove trailing whitespace on save
+    autocmd BufWritePost *.py execute ':Black'
     autocmd BufRead *.py set errorformat=%f:%l:\ %m
     autocmd FileType python map <buffer> <F8> :call Flake8()<CR>
     " Filetype was set to python.django only for django projects but files
@@ -461,12 +483,13 @@ autocmd FileType php vnoremap <C-D> :call PhpDocRange()<CR>
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
 autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
+set guifont=Hack\ Nerd\ Font:h14
+let g:Powerline_symbols = 'unicode'
 if has("gui_running")
     highlight SpellBad term=underline gui=undercurl guisp=Orange
-    set guifont=Menlo\ Regular:h16
-    set background=dark
+    set background=light
     autocmd GUIEnter * set visualbell t_vb=
-    colorscheme molokai
+    colorscheme gruvbox
     set guioptions-=T
     set guioptions-=l
     set guioptions-=L
