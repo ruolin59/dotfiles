@@ -78,6 +78,8 @@ let g:polyglot_disabled = ['javascript']
 Plug 'othree/html5.vim'  " HTML 5
 Plug 'nvie/vim-flake8'  " Python
 Plug 'psf/black'        " Python
+let g:black_linelength=80
+let g:black_skip_string_normalization=1
 Plug 'larsbs/vim-xmll'  " XML
 Plug 'jelera/vim-javascript-syntax'  " JavaScript
 Plug 'pangloss/vim-javascript' " JavaScript
@@ -153,16 +155,23 @@ Plug 'scrooloose/nerdtree'
 let g:NERDTreeWinSize = 25
 let g:NERDTreeIgnore = ['^tags$', '^PYSMELLTAGS', '\.pyc$', '__pycache__', 'htmlcov', '.*\.egg-info']
 
-Plug 'scrooloose/syntastic'
-let g:syntastic_check_on_open=0
-let g:syntastic_error_symbol='✗'
-let g:syntastic_style_error_symbol='☢'
-let g:syntastic_warning_symbol='⚠'
-let g:syntastic_auto_jump=0
-let g:syntastic_python_checkers = ['flake8']
-let g:syntastic_python_flake8_args = "--max-line-length=100"
-let g:syntastic_javascript_checkers = ['eslint']
-let g:syntastic_ruby_checkers = ['rubocop']  " , 'rubylint']  Ruby-Lint does not seem to be Rails friendly
+"Plug 'scrooloose/syntastic'
+"let g:syntastic_check_on_open=0
+"let g:syntastic_error_symbol='✗'
+"let g:syntastic_style_error_symbol='☢'
+"let g:syntastic_warning_symbol='⚠'
+"let g:syntastic_auto_jump=0
+"let g:syntastic_python_checkers = ['flake8']
+"let g:syntastic_python_flake8_args = "--max-line-length=100"
+"let g:syntastic_javascript_checkers = ['eslint']
+"let g:syntastic_ruby_checkers = ['rubocop']  " , 'rubylint']  Ruby-Lint does not seem to be Rails friendly
+
+Plug 'dense-analysis/ale'
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['eslint'],
+\   'python': ['black', 'isort'],
+\}
 
 Plug 'vim-airline/vim-airline'
 let g:airline_powerline_fonts = 1
@@ -215,7 +224,7 @@ set smartindent
 set tabstop=4
 set softtabstop=4
 set shiftwidth=4
-set textwidth=100
+set textwidth=80
 set shiftround
 set expandtab
 set backspace=indent,eol,start
@@ -403,8 +412,7 @@ augroup python_files
     autocmd BufRead,BufNewFile *.wsgi setfiletype python
     autocmd BufRead *.py SemanticHighlightToggle
 
-    autocmd BufWritePre *.py :%s/\s\+$//e " Remove trailing whitespace on save
-    autocmd BufWritePost *.py execute ':Black'
+    autocmd BufWritePre *.py execute ':ALEFix'
     autocmd BufRead *.py set errorformat=%f:%l:\ %m
     autocmd FileType python map <buffer> <F8> :call Flake8()<CR>
     " Filetype was set to python.django only for django projects but files
@@ -416,7 +424,6 @@ augroup python_files
         autocmd FileType html set ft=javascript.htmldjango.html " For SnipMate
         autocmd BufRead,BufNewFile *.html SemanticHighlight
     else
-        autocmd BufNewFile,BufRead *.py compiler pyunit
         nmap <Leader>t :call MakeGreen("%")<CR>
         nmap <Leader>T :call MakeGreen(".")<CR>
     endif
